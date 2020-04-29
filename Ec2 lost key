@@ -1,0 +1,25 @@
+ 3 Steps to retrieving an ec2 instances if you lost your private key
+       step 1 #USING VOLUMES
+ You'll create another EC2 instance in the same regoin using the same availability zone as the previous one the key was lost in.
+ then STOP the current EC2 instace which key was lost
+ then proceed to volume to detach the volume of the stopped ec2 instance and attach the volume of the newly created ec2 instance to the currently stopped volume
+ then, proceed to your CLI and SSH with your newly launched instance 
+ Check the volumes attached to your EC2 instance using the synthax $ lsblk
+ Youll see a file which is not yet mounted usually named 'xvdf'
+ Create a folder named Volume in your home directory
+ Then mount the disk inside the Volume folder you just created using the synthax $ sudo mount /dev/xvdf1/ Volume/ or sudo mount -o nouuid /dev/xvdf1 Volume/
+ Generate yor ssh key using $ ssh-keygen -t rsa then cd into your volume directory to put your authorized key in the folder using the synthax $ "sudo cp ~/.ssh/authoriuzed keys ." 
+ cd back into your home directory to unmount the volume disk $sudo umount /dev/xvdf1
+ check your listed volumes again with the command $lsblk
+ go back to your aws mgt console to detach the volume from your recovery instance and re-attach it back to your original instance 
+ ### wHILE RE-ATTACHING THE VOLUME, CHANGE THE NAME PATH TO "/dev/xvda"
+ finally start your original instance USING your recovery instance private key.
+ ### THE PRIVATE KEY YOU USED FOR THE RECOVERY INSATNCE.
+ 
+ 
+      #### USING AMI
+Select your instance, > click on actions and > create an image from the running instance
+Launch a new instance with the ami we just created with a different key.
+
+
+      ### USING SYSTEMS MANAGER
